@@ -1,6 +1,6 @@
 {
     "name": "yb98k/request",
-    "description": "a perfect request tool",
+    "description": "curl and fSockOpen",
     "license": "MIT",
     "authors": [
         {
