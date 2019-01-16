@@ -5,7 +5,8 @@
     "authors": [
         {
             "name": "yk",
-            "email": "yb98k@qq.com"
+            "email": "yb98k@qq.com",
+            "homepage": "https://github.com/yb98k"
         }
     ],
     "require": {
