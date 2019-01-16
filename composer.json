@@ -1,0 +1,19 @@
+{
+    "name": "yb98k/request",
+    "description": "a perfect request tool",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "yk",
+            "email": "yb98k@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yb\\": "src//"
+        }
+    }
+}
