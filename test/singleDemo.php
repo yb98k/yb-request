@@ -2,7 +2,7 @@
 
 //single request demo
 
-include (__DIR__.'/../../vendor/autoload.php');
+include (__DIR__.'/../vendor/autoload.php');
 
 $url = 'http://freeapi.ipip.net/118.28.8.8';
 

@@ -15,51 +15,96 @@ class FSockOpen
 
     protected $responseBody;
 
-    public function get(string $url, string $contentType = 'application/x-www-form-urlencoded', string $charset = 'UTF-8')
+    /**
+     * get方式获取
+     * @param string $url
+     * @param string $contentType
+     * @param string $charset
+     * @return $this
+     */
+    public function get(
+        string $url,
+        string $contentType = 'application/x-www-form-urlencoded',
+        string $charset = 'UTF-8')
     {
         $tempContent = $this->fSockOpen($url, $contentType, $charset);
         list($this->responseHeader, $this->responseBody) = explode("\r\n\r\n", $tempContent, 2);
 
         $this->responseBody = preg_replace_callback(
             '/(?:(?:\\r\\n|\\n)|^)([0-9A-F]+)(?:\\r\\n|\\n){1,2}(.*?)'. '((?:\\r\\n|\\n)(?:[0-9A-F]+(?:\\r\\n|\\n))|$)/si',
-            create_function('$matches','return hexdec($matches[1]) == strlen($matches[2]) ? $matches[2] : $matches[0];' ),
+            function($matches){
+                return hexdec($matches[1]) == strlen($matches[2]) ? $matches[2] : $matches[0];
+            },
             $this->responseBody
         );
 
         return $this;
     }
 
-    public function post(string $url, string $contentType = 'application/x-www-form-urlencoded', string $charset = 'UTF-8', $postData = [])
+    /**
+     * post 方式获取
+     * @param string $url
+     * @param string $contentType
+     * @param string $charset
+     * @param array $postData
+     * @return $this
+     */
+    public function post(
+        string $url,
+        string $contentType = 'application/x-www-form-urlencoded',
+        string $charset = 'UTF-8',
+        $postData = []
+    )
     {
         $tempContent = $this->fSockOpen($url, $contentType, $charset, $postData);
         list($this->responseHeader, $this->responseBody) = explode("\r\n\r\n", $tempContent, 2);
 
         $this->responseBody = preg_replace_callback(
             '/(?:(?:\\r\\n|\\n)|^)([0-9A-F]+)(?:\\r\\n|\\n){1,2}(.*?)'. '((?:\\r\\n|\\n)(?:[0-9A-F]+(?:\\r\\n|\\n))|$)/si',
-            create_function('$matches','return hexdec($matches[1]) == strlen($matches[2]) ? $matches[2] : $matches[0];' ),
+            function($matches){
+                return hexdec($matches[1]) == strlen($matches[2]) ? $matches[2] : $matches[0];
+            },
             $this->responseBody
         );
 
         return $this;
     }
 
+    /**
+     * 获取请求内容
+     * @return mixed
+     */
     public function getContent()
     {
         return $this->responseBody;
     }
 
+    /**
+     * 获取请求原始头部内容
+     * @return mixed
+     */
     public function getHeader()
     {
         return $this->responseHeader;
     }
 
+    /**
+     * 进行fsock的请求
+     * @param $url
+     * @param string $contentType
+     * @param string $charset
+     * @param array $postData
+     * @param bool $isAsync 是否使用异步形式 异步形式则不处理结果
+     * @return bool|string
+     */
     private function fSockOpen(
         $url,
         $contentType = 'application/x-www-form-urlencoded',
         $charset = 'UTF-8',
         $postData = [],
         $isAsync = false
-    ){
+    )
+    {
         $urlArr = parse_url($url);
 
 
